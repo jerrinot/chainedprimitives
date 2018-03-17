@@ -10,7 +10,7 @@ public final class IntSortedSet {
         List<Integer> tmpList = new ArrayList<>();
         Node current = first;
         while (current != null) {
-            tmpList.add(current.value);
+            current.addToList(tmpList);
             current = current.next;
         }
         int[] arr = new int[tmpList.size()];
@@ -22,90 +22,85 @@ public final class IntSortedSet {
 
     public boolean remove(int value) {
         Node current = first;
-        while (current != null) {
-            if (current.value == value) {
-                removeNode(current);
-                return true;
-            }
-            if (current.value > value) {
-                return false;
-            }
-            current = current.next;
+        if (current == null) {
+            return false;
         }
-        return false;
+        for (;;) {
+            Node.RemoveResult res = current.remove(value);
+            switch (res) {
+                case TRY_NEXT:
+                    current = current.next;
+                    break;
+                case REMOVED:
+                    return true;
+                case NODE_EMPTIED:
+                    unlinkEmptyNode(current);
+                    return true;
+                case NOT_FOUND:
+                    return false;
+            }
+        }
     }
 
-    private void removeNode(Node current) {
-        if (current.prev == null) {
-            //removing the first node -> shift everything to left
-
-            first = current.next;
-            if (first != null) {
-                first.prev = null;
+    private void unlinkEmptyNode(Node node) {
+        if (node.prev == null) {
+            Node next = node.next;
+            if (next != null) {
+                next.prev = null;
             }
-        } else if (current.next == null) {
-            //last node
-
-            Node prev = current.prev;
-            //prev is never null as otherwise the branch above would kick-in
+            first = next;
+        } else if (node.next == null) {
+            Node prev = node.prev;
             prev.next = null;
         } else {
-            Node prev = current.prev;
-            Node next = current.next;
+            Node prev = node.prev;
+            Node next = node.next;
             prev.next = next;
             next.prev = prev;
         }
+
     }
 
     public boolean contains(int value) {
         Node current = first;
-        while (current != null) {
-            if (current.value == value) {
-                return true;
-            }
-            if (current.value > value) {
-                return false;
-            }
-            current = current.next;
+        if (current == null) {
+            return false;
         }
-        return false;
+        for (;;) {
+            Node.ContainsResult containsResult = current.contains(value);
+            switch (containsResult) {
+                case TRUE:
+                    return true;
+                case FALSE:
+                    return false;
+                case TRY_NEXT:
+                    current = current.next;
+            }
+        }
     }
 
     public void add(int value) {
         Node current = first;
-        Node prev = null;
+        if (current == null) {
+            first = new Node(value, null, null);
+            return;
+        }
+
         for (;;) {
-            if (current == null) {
-                insertBetween(value, prev, null);
-                return;
+            Node.PushResult pushResult = current.tryPushValue(value);
+            switch (pushResult) {
+                case OK:
+                    return;
+                case FULL:
+                    Node.split(current);
+                    break;
+                case NEXT_HAS_SMALLER:
+                    current = current.next;
+                    break;
+                case ALREADY_EXIST:
+                    return;
             }
-
-            if (current.value == value) {
-                //already exist
-                return;
-            }
-
-            if (current.value > value) {
-                insertBetween(value, prev, current);
-                return;
-            }
-
-            prev = current;
-            current = current.next;
         }
     }
 
-    private void insertBetween(int value, Node prev, Node next) {
-        if (prev == null) {
-            //first node
-            first = new Node(value, null, next);
-        } else if (next == null) {
-            //last node
-            prev.next = new Node(value, prev, null);
-        } else {
-            Node newNode = new Node(value, prev, next);
-            prev.next = newNode;
-            next.prev = newNode;
-        }
-    }
 }
