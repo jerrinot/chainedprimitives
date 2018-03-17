@@ -4,7 +4,7 @@ import java.util.List;
 
 final class Node {
     //todo: introduce a bitmap for empty slots
-    private static final int EMPTY_SLOT = Integer.MAX_VALUE;
+    public static final int EMPTY_SLOT = Integer.MAX_VALUE;
 
     private int value0;
     private int value1;
@@ -23,14 +23,7 @@ final class Node {
         this.next = next;
     }
 
-    enum RemoveResult {
-        TRY_NEXT,
-        REMOVED,
-        NODE_EMPTIED,
-        NOT_FOUND
-    }
-
-    void addToList(List<Integer> list) {
+    void transferToList(List<Integer> list) {
         // value0 is never empty as we do not keep completely empty nodes
         // so no need to check for emptiness
         list.add(value0);
@@ -53,6 +46,8 @@ final class Node {
     }
 
     RemoveResult remove(int value) {
+        assert value != EMPTY_SLOT;
+
         if (next != null && next.value0 <= value) {
             return RemoveResult.TRY_NEXT;
         }
@@ -76,33 +71,9 @@ final class Node {
         return RemoveResult.NOT_FOUND;
     }
 
-    RemoveResult removeFrom3() {
-        value3 = EMPTY_SLOT;
-        return RemoveResult.REMOVED;
-    }
-
-    RemoveResult removeFrom2() {
-        value2 = value3;
-        value3 = EMPTY_SLOT;
-        return RemoveResult.REMOVED;
-    }
-
-    RemoveResult removeFrom1() {
-        value1 = value2;
-        value2 = value3;
-        value3 = EMPTY_SLOT;
-        return RemoveResult.REMOVED;
-    }
-
-    RemoveResult removeFrom0() {
-        value0 = value1;
-        value1 = value2;
-        value2 = value3;
-        value3 = EMPTY_SLOT;
-        return isEmpty(value0) ? RemoveResult.NODE_EMPTIED : RemoveResult.REMOVED;
-    }
-
     ContainsResult contains(int value) {
+        assert value != EMPTY_SLOT;
+
         if (next != null && next.value0 <= value) {
             return ContainsResult.TRY_NEXT;
         }
@@ -127,6 +98,8 @@ final class Node {
     }
 
     PushResult tryPushValue(int value) {
+        assert value != EMPTY_SLOT;
+
         if (next != null && next.value0 <= value) {
             return PushResult.NEXT_HAS_SMALLER;
         }
@@ -145,6 +118,32 @@ final class Node {
         } else {
             return pushInto3(value);
         }
+    }
+
+    private RemoveResult removeFrom3() {
+        value3 = EMPTY_SLOT;
+        return RemoveResult.REMOVED;
+    }
+
+    private RemoveResult removeFrom2() {
+        value2 = value3;
+        value3 = EMPTY_SLOT;
+        return RemoveResult.REMOVED;
+    }
+
+    private RemoveResult removeFrom1() {
+        value1 = value2;
+        value2 = value3;
+        value3 = EMPTY_SLOT;
+        return RemoveResult.REMOVED;
+    }
+
+    private RemoveResult removeFrom0() {
+        value0 = value1;
+        value1 = value2;
+        value2 = value3;
+        value3 = EMPTY_SLOT;
+        return isEmpty(value0) ? RemoveResult.NODE_EMPTIED : RemoveResult.REMOVED;
     }
 
     private PushResult pushInto3(int value) {
@@ -189,7 +188,7 @@ final class Node {
         return value == EMPTY_SLOT;
     }
 
-    public static void split(Node nodeToSplit) {
+    static void split(Node nodeToSplit) {
         Node newNode = new Node(nodeToSplit.value2, nodeToSplit, nodeToSplit.next);
         Node.PushResult pushResult = newNode.tryPushValue(nodeToSplit.value3);
         assert pushResult == Node.PushResult.OK;
@@ -214,5 +213,12 @@ final class Node {
         FULL,
         NEXT_HAS_SMALLER,
         ALREADY_EXIST
+    }
+
+    enum RemoveResult {
+        TRY_NEXT,
+        REMOVED,
+        NODE_EMPTIED,
+        NOT_FOUND
     }
 }

@@ -19,54 +19,184 @@ public class IntSortedSetTest {
     private static final int UPPER_BOUND = 800;
 
     @Test
+    public void unlinkLastNode() {
+        IntSortedSet set = new IntSortedSet();
+        set.add(0);
+        set.add(1);
+        set.add(2);
+        set.add(3);
+        set.add(4);
+
+        set.remove(2);
+        set.remove(3);
+        set.remove(4);
+
+
+        assertTrue(set.contains(0));
+        assertTrue(set.contains(1));
+        assertFalse(set.contains(2));
+        assertFalse(set.contains(3));
+        assertFalse(set.contains(4));
+    }
+
+    @Test
+    public void unlinkFirstNode() {
+        IntSortedSet set = new IntSortedSet();
+        set.add(0);
+        set.add(1);
+        set.add(2);
+        set.add(3);
+        set.add(4);
+
+        set.remove(0);
+        set.remove(1);
+        set.remove(2);
+        set.remove(3);
+
+        assertFalse(set.contains(0));
+        assertFalse(set.contains(1));
+        assertFalse(set.contains(2));
+        assertFalse(set.contains(3));
+        assertTrue(set.contains(4));
+    }
+
+    @Test
+    public void containsMaxInt_whenContainsMaxInt() {
+        IntSortedSet set = new IntSortedSet();
+        set.add(Integer.MAX_VALUE);
+        assertTrue(set.contains(Integer.MAX_VALUE));
+    }
+
+    @Test
+    public void containsMaxInt_whenContainsZero() {
+        IntSortedSet set = new IntSortedSet();
+        set.add(0);
+        assertFalse(set.contains(Integer.MAX_VALUE));
+    }
+
+    @Test
+    public void containsMaxInt_whenEmpty() {
+        IntSortedSet set = new IntSortedSet();
+        assertFalse(set.contains(Integer.MAX_VALUE));
+    }
+
+    @Test
+    public void containsZero_whenEmpty() {
+        IntSortedSet set = new IntSortedSet();
+        assertFalse(set.contains(0));
+    }
+
+    @Test
+    public void toArray_withMaxIntAndZero() {
+        IntSortedSet set = new IntSortedSet();
+        set.add(Integer.MAX_VALUE);
+        set.add(0);
+        int[] ints = set.toArray();
+        assertEquals(2, ints.length);
+        assertEquals(0, ints[0]);
+        assertEquals(Integer.MAX_VALUE, ints[1]);
+    }
+
+    @Test
+    public void toArray_withMaxInt() {
+        IntSortedSet set = new IntSortedSet();
+        set.add(Integer.MAX_VALUE);
+        int[] ints = set.toArray();
+        assertEquals(1, ints.length);
+        assertEquals(Integer.MAX_VALUE, ints[0]);
+    }
+
+    @Test
+    public void toArray_empty() {
+        IntSortedSet set = new IntSortedSet();
+        int[] ints = set.toArray();
+        assertEquals(0, ints.length);
+    }
+
+    @Test
+    public void addRemoveAndGetMaxInt() {
+        IntSortedSet set = new IntSortedSet();
+        set.remove(Integer.MAX_VALUE);
+        assertFalse(set.contains(Integer.MAX_VALUE));
+    }
+
+    @Test
+    public void addAndDoubleRemoveMaxInt() {
+        IntSortedSet set = new IntSortedSet();
+        set.remove(Integer.MAX_VALUE);
+        assertFalse(set.remove(Integer.MAX_VALUE));
+    }
+
+    @Test
+    public void addAndRemoveMaxInt() {
+        IntSortedSet set = new IntSortedSet();
+        set.add(Integer.MAX_VALUE);
+        assertTrue(set.remove(Integer.MAX_VALUE));
+    }
+
+    @Test
+    public void getMaxInt() {
+        IntSortedSet set = new IntSortedSet();
+        assertFalse(set.contains(Integer.MAX_VALUE));
+    }
+
+    @Test
+    public void addAndGetMaxInt() {
+        IntSortedSet set = new IntSortedSet();
+        set.add(Integer.MAX_VALUE);
+        assertTrue(set.contains(Integer.MAX_VALUE));
+    }
+
+
+    @Test
     public void testRemovalNonExisting() {
-        IntSortedSet intSortedSet = new IntSortedSet();
-        assertFalse(intSortedSet.remove(0));
+        IntSortedSet set = new IntSortedSet();
+        assertFalse(set.remove(0));
     }
 
     @Test
     public void testRemovalExisting() {
-        IntSortedSet intSortedSet = new IntSortedSet();
-        intSortedSet.add(0);
+        IntSortedSet set = new IntSortedSet();
+        set.add(0);
 
-        assertTrue(intSortedSet.remove(0));
+        assertTrue(set.remove(0));
     }
 
     @Test
     public void testDoubleRemovalExisting() {
-        IntSortedSet intSortedSet = new IntSortedSet();
-        intSortedSet.add(0);
+        IntSortedSet set = new IntSortedSet();
+        set.add(0);
 
-        intSortedSet.remove(0);
-        assertFalse(intSortedSet.remove(0));
+        set.remove(0);
+        assertFalse(set.remove(0));
     }
 
     @Test
     public void testRemovalFromHead() {
-        IntSortedSet intSortedSet = new IntSortedSet();
-        intSortedSet.add(0);
-        intSortedSet.add(1);
-        intSortedSet.add(2);
-        intSortedSet.add(3);
+        IntSortedSet set = new IntSortedSet();
+        set.add(0);
+        set.add(1);
+        set.add(2);
+        set.add(3);
 
-        assertTrue(intSortedSet.remove(0));
-        assertTrue(intSortedSet.remove(1));
-        assertTrue(intSortedSet.remove(2));
-        assertTrue(intSortedSet.remove(3));
+        assertTrue(set.remove(0));
+        assertTrue(set.remove(1));
+        assertTrue(set.remove(2));
+        assertTrue(set.remove(3));
     }
 
     @Test
     public void testRemovalFromTail() {
-        IntSortedSet intSortedSet = new IntSortedSet();
-        intSortedSet.add(0);
-        intSortedSet.add(1);
-        intSortedSet.add(2);
-        intSortedSet.add(3);
+        IntSortedSet set = new IntSortedSet();
+        set.add(0);
+        set.add(1);
+        set.add(2);
+        set.add(3);
 
-        assertTrue(intSortedSet.remove(3));
-        assertTrue(intSortedSet.remove(2));
-        assertTrue(intSortedSet.remove(1));
-        assertTrue(intSortedSet.remove(0));
+        assertTrue(set.remove(3));
+        assertTrue(set.remove(2));
+        assertTrue(set.remove(1));
+        assertTrue(set.remove(0));
     }
 
     @Test
