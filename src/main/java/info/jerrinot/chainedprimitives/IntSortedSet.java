@@ -7,6 +7,15 @@ public final class IntSortedSet {
     private Node first;
     private boolean hasMaxInt;
 
+    //for debugging only
+    void print() {
+        Node current = first;
+        while (current != null) {
+            current.print();
+            current = current.next;
+        }
+    }
+
     public int[] toArray() {
         List<Integer> tmpList = new ArrayList<>();
         Node current = first;

@@ -5,6 +5,9 @@ import java.util.List;
 final class Node {
     public static final int EMPTY_SLOT = Integer.MAX_VALUE;
 
+    private static final char SYMBOL_EMPTY_SLOT = '-';
+    private static final char SYMBOL_NON_EMPTY_SLOT = '*';
+
     private int value0;
     private int value1;
     private int value2;
@@ -385,6 +388,56 @@ final class Node {
             oldNext.prev = newNode;
         }
         nodeToSplit.next = newNode;
+    }
+
+    public void print() {
+        if (value0 == EMPTY_SLOT) {
+            System.out.print(SYMBOL_EMPTY_SLOT);
+        } else {
+            System.out.print(SYMBOL_NON_EMPTY_SLOT);
+        }
+
+        if (value1 == EMPTY_SLOT) {
+            System.out.print(SYMBOL_EMPTY_SLOT);
+        } else {
+            System.out.print(SYMBOL_NON_EMPTY_SLOT);
+        }
+
+        if (value2 == EMPTY_SLOT) {
+            System.out.print(SYMBOL_EMPTY_SLOT);
+        } else {
+            System.out.print(SYMBOL_NON_EMPTY_SLOT);
+        }
+
+        if (value3 == EMPTY_SLOT) {
+            System.out.print(SYMBOL_EMPTY_SLOT);
+        } else {
+            System.out.print(SYMBOL_NON_EMPTY_SLOT);
+        }
+
+        if (value4 == EMPTY_SLOT) {
+            System.out.print(SYMBOL_EMPTY_SLOT);
+        } else {
+            System.out.print(SYMBOL_NON_EMPTY_SLOT);
+        }
+
+        if (value5 == EMPTY_SLOT) {
+            System.out.print(SYMBOL_EMPTY_SLOT);
+        } else {
+            System.out.print(SYMBOL_NON_EMPTY_SLOT);
+        }
+
+        if (value6 == EMPTY_SLOT) {
+            System.out.print(SYMBOL_EMPTY_SLOT);
+        } else {
+            System.out.print(SYMBOL_NON_EMPTY_SLOT);
+        }
+
+        if (value7 == EMPTY_SLOT) {
+            System.out.print(SYMBOL_EMPTY_SLOT);
+        } else {
+            System.out.print(SYMBOL_NON_EMPTY_SLOT);
+        }
     }
 
     enum ContainsResult {
