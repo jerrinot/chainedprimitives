@@ -26,17 +26,26 @@ public class IntSortedSetTest {
         set.add(2);
         set.add(3);
         set.add(4);
+        set.add(5);
+        set.add(6);
+        set.add(7);
+        set.add(8);
 
-        set.remove(2);
-        set.remove(3);
         set.remove(4);
-
+        set.remove(5);
+        set.remove(6);
+        set.remove(7);
+        set.remove(8);
 
         assertTrue(set.contains(0));
         assertTrue(set.contains(1));
-        assertFalse(set.contains(2));
-        assertFalse(set.contains(3));
+        assertTrue(set.contains(2));
+        assertTrue(set.contains(3));
         assertFalse(set.contains(4));
+        assertFalse(set.contains(5));
+        assertFalse(set.contains(6));
+        assertFalse(set.contains(7));
+        assertFalse(set.contains(8));
     }
 
     @Test
@@ -47,6 +56,10 @@ public class IntSortedSetTest {
         set.add(2);
         set.add(3);
         set.add(4);
+        set.add(5);
+        set.add(6);
+        set.add(7);
+        set.add(8);
 
         set.remove(0);
         set.remove(1);
@@ -58,6 +71,10 @@ public class IntSortedSetTest {
         assertFalse(set.contains(2));
         assertFalse(set.contains(3));
         assertTrue(set.contains(4));
+        assertTrue(set.contains(5));
+        assertTrue(set.contains(6));
+        assertTrue(set.contains(7));
+        assertTrue(set.contains(8));
     }
 
     @Test
