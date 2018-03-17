@@ -370,24 +370,24 @@ final class Node {
         return value == EMPTY_SLOT;
     }
 
-    static void split(Node nodeToSplit) {
-        Node newNode = new Node(nodeToSplit.value4, nodeToSplit, nodeToSplit.next);
-        Node.PushResult pushResult = newNode.tryPushValue(nodeToSplit.value5);
+    void split() {
+        Node newNode = new Node(value4, this, next);
+        Node.PushResult pushResult = newNode.tryPushValue(value5);
         assert pushResult == Node.PushResult.OK;
-        pushResult = newNode.tryPushValue(nodeToSplit.value6);
+        pushResult = newNode.tryPushValue(value6);
         assert pushResult == Node.PushResult.OK;
-        pushResult = newNode.tryPushValue(nodeToSplit.value7);
+        pushResult = newNode.tryPushValue(value7);
         assert pushResult == Node.PushResult.OK;
 
-        nodeToSplit.value4 = Node.EMPTY_SLOT;
-        nodeToSplit.value5 = Node.EMPTY_SLOT;
-        nodeToSplit.value6 = Node.EMPTY_SLOT;
-        nodeToSplit.value7 = Node.EMPTY_SLOT;
-        if (nodeToSplit.next != null) {
-            Node oldNext = nodeToSplit.next;
+        value4 = Node.EMPTY_SLOT;
+        value5 = Node.EMPTY_SLOT;
+        value6 = Node.EMPTY_SLOT;
+        value7 = Node.EMPTY_SLOT;
+        if (next != null) {
+            Node oldNext = next;
             oldNext.prev = newNode;
         }
-        nodeToSplit.next = newNode;
+        next = newNode;
     }
 
     public void print() {

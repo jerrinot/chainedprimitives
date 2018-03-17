@@ -101,7 +101,7 @@ public final class IntSortedSet {
                 case OK:
                     return;
                 case FULL:
-                    Node.split(current);
+                    current.split();
                     break;
                 case NEXT_HAS_SMALLER:
                     current = current.next;
