@@ -372,10 +372,13 @@ final class Node {
 
     void split() {
         Node newNode = new Node(value4, this, next);
+
         Node.PushResult pushResult = newNode.tryPushValue(value5);
         assert pushResult == Node.PushResult.OK;
+
         pushResult = newNode.tryPushValue(value6);
         assert pushResult == Node.PushResult.OK;
+
         pushResult = newNode.tryPushValue(value7);
         assert pushResult == Node.PushResult.OK;
 
